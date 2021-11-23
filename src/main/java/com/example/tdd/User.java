@@ -8,10 +8,13 @@ import lombok.Setter;
 @Setter
 public class User {
     private String userName;
-    private String Password;
+    private byte [] salt;
+    private String password;
 
-    public User(String userName, String password) {
+    public User(String userName, byte[] salt, String password) {
         this.userName = userName;
-        Password = password;
+        this.salt = salt;
+        this.password = password;
     }
+
 }

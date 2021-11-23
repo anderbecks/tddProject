@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,22 +20,25 @@ class TddProjectApplicationTests {
 
 	@BeforeEach
 	@Test
-	void userFactory_test_success(){
+	void userFactory_test_success() throws NoSuchAlgorithmException {
 		UserFactory userFactory = new UserFactory();
-		User user = userFactory.createUser("anna", "losen");
-		User user1 = userFactory.createUser("berit", "123456");
-		User user2 = userFactory.createUser("kalle", "password");
+		SecureUtils secureUtils = new SecureUtils();
+		User user = userFactory.createUser(secureUtils,"anna", "losen");
+		User user1 = userFactory.createUser(secureUtils,"berit", "123456");
+		User user2 = userFactory.createUser(secureUtils,"kalle", "password");
 		userList = List.of(user,user1,user2);
 		assertNotNull(user);
 	}
 
 	@Test
 	void user_login_test_success(){
+		User user = userList.get(1);
+		String password = SecureUtils.getSecurePassword("123456", user.getSalt());
 		Login login = new Login();
-		Boolean success = login.loginValidator(userList, "berit", "123456");
-
+		boolean success = login.loginValidator(userList,"berit", password);
 		assertEquals(true, success);
 	}
+
 
 
 
