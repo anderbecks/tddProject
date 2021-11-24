@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+
 public class SecureUtils {
 
     public static byte[] getSalt() throws NoSuchAlgorithmException {

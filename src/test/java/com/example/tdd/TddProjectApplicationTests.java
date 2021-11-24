@@ -1,5 +1,6 @@
 package com.example.tdd;
 
+import com.example.tdd.exceptions.UsernameOrPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,7 +32,7 @@ class TddProjectApplicationTests {
 	}
 
 	@Test
-	void user_login_test_success(){
+	void user_login_test_success() throws UsernameOrPasswordException {
 		User user = userList.get(1);
 		String password = SecureUtils.getSecurePassword("123456", user.getSalt());
 		Login login = new Login();
