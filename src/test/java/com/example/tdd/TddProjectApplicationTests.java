@@ -3,13 +3,13 @@ package com.example.tdd;
 import com.example.tdd.exceptions.UsernameOrPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TddProjectApplicationTests {
@@ -34,9 +34,10 @@ class TddProjectApplicationTests {
 	@Test
 	void user_login_test_success() throws UsernameOrPasswordException {
 		Login login = new Login();
-		boolean success = login.loginValidator(userList,"berit", "123456");
-		assertEquals(true, success);
+		String success = login.loginValidator(userList,"berit", "123456");
+		assertFalse(success.isEmpty());
 	}
+	
 
 
 

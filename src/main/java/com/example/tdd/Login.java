@@ -7,12 +7,13 @@ import java.util.List;
 
 public class Login {
 
-    public boolean loginValidator(List<User> userList, String userName, String password) throws UsernameOrPasswordException {
+    public String loginValidator(List<User> userList, String userName, String password) throws UsernameOrPasswordException {
         for (User user : userList){
             if (user.getUserName().equals(userName)){
                 password = SecureUtils.getSecurePassword(password, user.getSalt());
                 if (user.getPassword().equals(password)){
-                    return true;
+
+                    return JwtUtils.createJWT(user);
                 }
             }
         }
