@@ -1,10 +1,12 @@
 package com.example.tdd;
 
 import com.example.tdd.exceptions.UsernameOrPasswordException;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Controller
 public class Login {
 
     public String loginValidator(List<User> userList, String userName, String password) throws UsernameOrPasswordException {

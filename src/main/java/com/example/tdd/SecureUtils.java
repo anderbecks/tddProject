@@ -1,10 +1,12 @@
 package com.example.tdd;
 
+import org.springframework.stereotype.Component;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-
+@Component
 public class SecureUtils {
 
     public static byte[] getSalt() throws NoSuchAlgorithmException {
