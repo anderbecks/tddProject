@@ -1,4 +1,4 @@
-package com.example.tdd;
+package com.example.tdd.utils;
 
 import org.springframework.stereotype.Component;
 

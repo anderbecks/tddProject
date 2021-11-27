@@ -1,5 +1,6 @@
-package com.example.tdd;
+package com.example.tdd.utils;
 
+import com.example.tdd.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

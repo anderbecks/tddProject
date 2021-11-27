@@ -1,14 +1,21 @@
 package com.example.tdd;
 
+import com.example.tdd.entities.User;
+import com.example.tdd.enums.Permissions;
+import com.example.tdd.enums.Resource;
 import com.example.tdd.exceptions.UsernameOrPasswordException;
-import io.jsonwebtoken.Claims;
+import com.example.tdd.utils.SecureUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,14 +28,13 @@ class TddProjectApplicationTests {
 	Login login;
 
 	@Autowired
-	UserFactory userFactory;
+	UserService userService;
 
 	@Autowired
 	SecureUtils secureUtils;
 
 	@Autowired
 	JwtService jwtService;
-
 	@Test
 	void contextLoads() {
 	}
@@ -36,11 +42,12 @@ class TddProjectApplicationTests {
 	@BeforeEach
 	@Test
 	void userFactory_test_success() throws NoSuchAlgorithmException {
-		User user = userFactory.createUser(secureUtils,"anna", "losen");
-		User user1 = userFactory.createUser(secureUtils,"berit", "123456");
-		User user2 = userFactory.createUser(secureUtils,"kalle", "password");
-		userList = List.of(user,user1,user2);
-		assertNotNull(user);
+		userService.createUser(secureUtils,"anna", "losen", Resource.ACCOUNT, List.of(Permissions.READ));
+		userService.createUser(secureUtils,"berit", "123456", Resource.ACCOUNT, List.of(Permissions.READ, Permissions.WRITE));
+		userService.createUser(secureUtils,"kalle", "password", Resource.PROVISION_CALC, List.of(Permissions.EXECUTE));
+
+		userList = userService.getAllUsers();
+		assertNotNull(userList);
 	}
 
 	@Test
@@ -51,10 +58,20 @@ class TddProjectApplicationTests {
 	}
 
 	@Test
-	void  token_validation_test_success() throws UsernameOrPasswordException {
+	void token_validation_test_success() throws UsernameOrPasswordException {
 		String token = login.loginValidator(userList,"berit", "123456");
 		assertTrue(jwtService.jwtIsValid(token));
 	}
+
+
+	@Test
+	void user_authorities_test_success() throws UsernameOrPasswordException {
+		String token = login.loginValidator(userList,"berit", "123456");
+		assertNotNull(userService.getUserPermissions(token, Resource.ACCOUNT));
+		assertEquals(List.of(Permissions.READ, Permissions.WRITE), userService.getUserPermissions(token, Resource.ACCOUNT));
+	}
+
+
 
 
 
